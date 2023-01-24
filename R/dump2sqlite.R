@@ -2,9 +2,10 @@
 #'
 #' @param in_file MySQL dump file path
 #' @param out_file SQLite file path
+#' @param ... Additional parameters for reading dump (e.g. encoding)
 #' @export
-dump2sqlite <- function(in_file, out_file = paste0(in_file, "ite")){
-  dump <- readLines(in_file) |>
+dump2sqlite <- function(in_file, out_file = paste0(in_file, "ite"), ...){
+  dump <- readLines(in_file, ...) |>
     trimws()
   tables <- get_tables(dump)
   create_statements <- purrr::map_chr(tables, ~get_create(dump, .x))
