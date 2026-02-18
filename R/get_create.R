@@ -15,3 +15,16 @@ get_create <- function(dump, table){
     stringr::str_replace_all(",,", ",") |>
     stringr::str_replace_all(",\\)", "\\)")
 }
+
+
+
+get_inserts <- function(dump){
+  starts <- which(stringr::str_starts(dump, "INSERT INTO"))
+  statements <- character(length(start))
+  for (i in 1:length(starts)){
+    end <- min(which(stringr::str_ends(dump[starts[i]:length(dump)], ";")))
+    statements[i] <- paste0(dump[starts[i]:(starts[i] + end - 1)], collapse = " ") |>
+      stringr::str_remove_all("\\\\'")
+  }
+  statements
+}
